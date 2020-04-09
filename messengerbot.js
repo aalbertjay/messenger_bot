@@ -16,6 +16,7 @@ console.log("Welcome to the ANova mass DMer. Before you start, have a comma-sepa
     "the message that you want to send stored somewhere else.");
 console.log("This is because the bot will make you restart the process if you enter your login credentials incorrectly oops\n");
 
+// Prompt for login credentials, list of recipients, and message to send
 rl.question("Enter your Facebook login email: ", function(email) {
     login_email = email;
     rl.question("Enter your Facebook password: ", function(pw) {
@@ -36,6 +37,7 @@ rl.on("close", function() {
         login({email: login_email, password: login_password}, (err, api) => {
             if (err) {
                 switch (err.error) {
+                    // 2FA enabled
                     case 'login-approval':
                         console.log('Enter 2FA code > ');
                             rl.on('line', (line) => {
@@ -49,11 +51,11 @@ rl.on("close", function() {
                 return;
             }
 
+            // Send dat message
             recipients.map(name =>
                 api.getUserID(name, (err, data) => {
                     if(err) return console.error(err);
 
-                    // Send the message to the best match (best by Facebook's criteria)
                     var threadID = data[0].userID;
                     api.sendMessage(msg, threadID);
                 })
