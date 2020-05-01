@@ -4,17 +4,28 @@ import './App.css';
 
 class App extends Component {
   constructor(props) {
-      super(props);
-      this.state = { 
-        apiResponse: '',
-        email: '',
-        password: '',
-        message: '',
-        recipients: ''
-      };
+    super(props);
+    this.state = { 
+      apiResponse: '',
+      email: '',
+      password: '',
+      message: '',
+      recipients: ''
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
-  callAPI = () => {
+  handleInputChange(event) {
+    const target = event.target;
+    this.setState({
+      [target.name]: target.value    
+    });
+  }
+
+  // Send a message
+  sendMessage(event) {    
     var url = 'http://localhost:9000/messages';
     fetch(url, {
       method: 'POST',
@@ -25,6 +36,7 @@ class App extends Component {
     })
       .then(res => res.text())
       .then(res => this.setState({ apiResponse: res }));
+    event.preventDefault();
   }
 
   render() {
@@ -37,48 +49,56 @@ class App extends Component {
           <Grid item xs={12} >
             Send your message to a bunch of people at once. 90% reply rate guaranteed, 50% of the time!
           </Grid>
-          <Grid item xs={6} className="Form-prompt">
-            Facebook login email
-          </Grid>
-          <Grid item xs={6}>
-            <TextField 
-              fullWidth
-              onChange={e => this.setState({ email: e.target.value })}/>
-          </Grid>
-          <Grid item xs={6} className="Form-prompt">
-            Facebook password
-          </Grid>
-          <Grid item xs={6}>
-            <TextField 
-              type="password"
-              fullWidth
-              onChange={e => this.setState({ password: e.target.value })} />
-          </Grid>
-          <Grid item xs={6} className="Form-prompt">
-            Recipients (separate by commas)
-          </Grid>
-          <Grid item xs={6}>
-            <TextField 
-              fullWidth
-              onChange={e => this.setState({ recipients: e.target.value })}/>
-          </Grid>
-          <Grid item xs={6} className="Form-prompt">
-            Message
-          </Grid>
-          <Grid item xs={6}>
-            <TextField 
-              variant="outlined"
-              fullWidth
-              multiline
-              rows={4}
-              onChange={e => this.setState({ message: e.target.value })}/>
-          </Grid>
           <Grid item xs={12}>
-            <Button 
-              onClick={this.callAPI}
-              variant="contained" >
-              Send Message
-            </Button>
+            <form onSubmit={this.sendMessage}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Facebook login email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={this.handleInputChange} />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Facebook password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={this.handleInputChange} />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="recipients"
+                label="Recipients (separate by commas)"
+                name="recipients"
+                onChange={this.handleInputChange} />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="message"
+                label="Message"
+                name="message"
+                multiline
+                rows={4}
+                onChange={this.handleInputChange} />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary" >
+                Send Message
+              </Button>
+            </form>
           </Grid>
         </Grid>
       </div>

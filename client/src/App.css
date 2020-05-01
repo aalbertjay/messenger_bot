@@ -1,7 +1,7 @@
 .App {
   text-align: center;
-  margin-left: 400px;
-  margin-right: 400px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -27,13 +27,4 @@
 
 .Form-prompt {
   text-align: left;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
