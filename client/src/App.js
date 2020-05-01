@@ -10,13 +10,19 @@ class App extends Component {
         email: '',
         password: '',
         message: '',
-        recipients: []
+        recipients: ''
       };
   }
 
   callAPI = () => {
-    console.log('hello');
-    fetch('http://localhost:9000/testAPI')
+    var url = 'http://localhost:9000/messages';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state),
+    })
       .then(res => res.text())
       .then(res => this.setState({ apiResponse: res }));
   }
@@ -26,7 +32,10 @@ class App extends Component {
       <div className="App">
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <h1>Messenger Bot</h1>
+            <h1>DM Bot</h1>
+          </Grid>
+          <Grid item xs={12} >
+            Send your message to a bunch of people at once. 90% reply rate guaranteed, 50% of the time!
           </Grid>
           <Grid item xs={6} className="Form-prompt">
             Facebook login email
@@ -36,7 +45,7 @@ class App extends Component {
               fullWidth
               onChange={e => this.setState({ email: e.target.value })}/>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} className="Form-prompt">
             Facebook password
           </Grid>
           <Grid item xs={6}>
@@ -45,7 +54,7 @@ class App extends Component {
               fullWidth
               onChange={e => this.setState({ password: e.target.value })} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} className="Form-prompt">
             Recipients (separate by commas)
           </Grid>
           <Grid item xs={6}>
@@ -53,7 +62,7 @@ class App extends Component {
               fullWidth
               onChange={e => this.setState({ recipients: e.target.value })}/>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} className="Form-prompt">
             Message
           </Grid>
           <Grid item xs={6}>
@@ -70,9 +79,6 @@ class App extends Component {
               variant="contained" >
               Send Message
             </Button>
-          </Grid>
-          <Grid item xs={12}>
-            API response: {this.state.apiResponse}
           </Grid>
         </Grid>
       </div>
