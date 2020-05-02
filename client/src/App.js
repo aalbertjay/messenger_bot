@@ -41,7 +41,7 @@ class App extends Component {
 
   render() {
     return (
-      <Container maxWidth="xs">
+      <Container maxWidth="sm">
           <h1>DM Bot</h1>
           Send your message to a bunch of people at once. 90% reply rate guaranteed, 50% of the time!
             <form onSubmit={this.sendMessage}>
