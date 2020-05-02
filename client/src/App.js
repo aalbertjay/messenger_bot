@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Grid, TextField } from '@material-ui/core';
+import { Button, Container, TextField } from '@material-ui/core';
 import './App.css';
 
 class App extends Component {
@@ -41,15 +41,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <h1>DM Bot</h1>
-          </Grid>
-          <Grid item xs={12} >
-            Send your message to a bunch of people at once. 90% reply rate guaranteed, 50% of the time!
-          </Grid>
-          <Grid item xs={12}>
+      <Container maxWidth="xs">
+          <h1>DM Bot</h1>
+          Send your message to a bunch of people at once. 90% reply rate guaranteed, 50% of the time!
             <form onSubmit={this.sendMessage}>
               <TextField
                 variant="outlined"
@@ -99,9 +93,7 @@ class App extends Component {
                 Send Message
               </Button>
             </form>
-          </Grid>
-        </Grid>
-      </div>
+      </Container>
     );
   }
 }
