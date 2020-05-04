@@ -12,6 +12,7 @@ Having been in a bunch of clubs during my time in college, I've often found myse
 Install dependencies:
 ```
 $ cd api && npm install
+$ cd ..
 $ cd client && npm install
 ```
 
