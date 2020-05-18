@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container, TextField } from '@material-ui/core';
+import { Button, Container, TextField, Checkbox } from '@material-ui/core';
 import './App.css';
 
 class App extends Component {
@@ -86,12 +86,16 @@ class App extends Component {
                 multiline
                 rows={4}
                 onChange={this.handleInputChange} />
+              <Checkbox>
+                Show Variables
+              </Checkbox>
               <Button
                 type="submit"
                 variant="contained"
                 color="primary" >
                 Send Message
               </Button>
+              
             </form>
       </Container>
     );

@@ -1,17 +1,47 @@
 var express = require('express');
 var login = require('facebook-chat-api');
+const fs = require("fs");
 
 var router = express.Router();
 router.post('/', function(req, res, next) {
-    loginAndSendMessage(req.body);
-    res.send('logging in');
+    if (fs.existsSync('appstate.json')) {
+        authenticate({'appState': JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, res);
+    } else {
+        authenticate(req.body, res);
+    }
+    // loginAndSendMessage(req.body);
 });
 
+function authenticate(credentials, res) {
+    login(credentials, (err, api) => {
+        if (err) {
+            switch (err.error) {
+                // 2FA enabled
+                case 'login-approval':
+                    console.log('Enter 2FA code > ');
+                        rl.on('line', (line) => {
+                            err.continue(line);
+                            rl.close();
+                        });
+                        break;
+                default:
+                    console.error(err);
+            }
+            res.send('Wrong username/password');
+            return err;
+        }
+
+        console.log('writing file');
+        fs.writeFileSync('appstate.json', JSON.stringify(api.getAppState()));
+        res.send('Logged in');
+    });
+}
+
 const loginAndSendMessage = credentials => {
-    login_email = credentials['email'];
-    login_password = credentials['password'];
-    recipientsString = credentials['recipients'];
-    message = credentials['message'];
+    const login_email = credentials['email'];
+    const login_password = credentials['password'];
+    const recipientsString = credentials['recipients'];
+    const message = credentials['message'];
 
     if (!(login_email && login_password && recipientsString && message)) {
         return console.error('All fields must be filled in');
@@ -34,15 +64,17 @@ const loginAndSendMessage = credentials => {
         }
 
         // Send dat message
-        recipients = recipientsString.split(',');
-        recipients.map(name =>
+        const recipients = recipientsString.split('\, ?');
+        recipients.map(name => {
+            
             api.getUserID(name, (err, data) => {
                 if(err) return console.error(err);
 
-                var threadID = data[0].userID;
-                api.sendMessage(message, threadID);
-            })
-        );
+                const threadID = data[0].userID;
+                userMessage = message.replace("<name>", name);
+                api.sendMessage(userMessage, threadID);
+            });
+        });
     });
 }
 
