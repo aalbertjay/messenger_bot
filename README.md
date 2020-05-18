@@ -5,7 +5,16 @@ Having been in a bunch of clubs during my time in college, I've often found myse
 
 `messenger_bot` uses [`facebook-chat-api`](https://www.npmjs.com/package/facebook-chat-api) to log in, find recipients, and send messages. 
 
+**Disclaiimer:** As of now, using this app will make Facebook think that your Facebook account was hacked. You'll have to generate a new password. But that only takes like 10 seconds compared to the >1 minute you'd have to spend messaging people...right?
+
 ## Get Started
+
+Install dependencies:
+```
+$ cd api && npm install
+$ cd ..
+$ cd client && npm install
+```
 
 Start the backend:
 ```
